@@ -18,6 +18,5 @@ class NSTVKFetcher:
 
 	def get_friends_list(self, id):
 		print "NSTVKFetcher: Returning "+id+"'s friends list..."
-		result = []
-		result.append(id)
+		result = [id]
 		return result
