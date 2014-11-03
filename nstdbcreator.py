@@ -5,7 +5,6 @@ from nstvkfetcher import NSTVKFetcher
 
 def main():
 	print "NSTDBCreator by NST team"
-	print
 	keeper = NSTDBKeeper()
 	fetcher = NSTVKFetcher()
 
