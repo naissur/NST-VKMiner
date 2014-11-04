@@ -2,3 +2,5 @@
 *.pyc
 #vim swap files
 *.swp
+
+vkapitest.py

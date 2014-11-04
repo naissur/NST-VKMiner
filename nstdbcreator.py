@@ -2,15 +2,28 @@
 
 from nstdbkeeper import NSTDBKeeper
 from nstvkfetcher import NSTVKFetcher
+import sys
 
 def main():
-	print "NSTDBCreator by NST team"
-	keeper = NSTDBKeeper()
-	fetcher = NSTVKFetcher()
+	if len(sys.argv) < 4:
+		print "Usage: nstdbcreator <app_id> <login> <password>"
+		quit()
 
-	personId = fetcher.get_next_id()
-	friendsList = fetcher.get_friends_list(personId)
-	keeper.insert(personId, friendsList)
+	print "NSTDBCreator by NST team"
+	app_id = sys.argv[1]
+	login = sys.argv[2]
+	password = sys.argv[3]
+
+	try:
+		fetcher = NSTVKFetcher(app_id, login, password)
+		keeper = NSTDBKeeper()
+	except Exception as e:
+		print e
+		print "Not initialized, quitting..."
+		quit()
+
+	(person_id, frient_list) = fetcher.get_next()
+	keeper.insert(person_id, frient_list)
 
 if __name__ == "__main__":
 	main()

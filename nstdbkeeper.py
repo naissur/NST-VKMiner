@@ -11,4 +11,4 @@ class NSTDBKeeper:
 		print "NSTDBKeeper: NSTDBKeeper initialized"
 
 	def insert(self, personId, friendList):
-		print "NSTDBKeeper: Insetring {} width friends {}".format(personId, ' '.join(friendList))
+		print "NSTDBKeeper: Insetring {} with friends {}".format(personId, ' '.join(str(i) for i in friendList))
