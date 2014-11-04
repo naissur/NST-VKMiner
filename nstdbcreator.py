@@ -8,9 +8,8 @@ def main():
 	keeper = NSTDBKeeper()
 	fetcher = NSTVKFetcher()
 
-	personId = fetcher.get_next_id()
-	friendsList = fetcher.get_friends_list(personId)
-	keeper.insert(personId, friendsList)
+	(person_id, frient_list) = fetcher.get_next()
+	keeper.insert(person_id, frient_list)
 
 if __name__ == "__main__":
 	main()

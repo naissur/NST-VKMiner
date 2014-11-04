@@ -11,13 +11,11 @@ class NSTVKFetcher:
 		self._id = 0
 		print "NSTVKFetcher: NSTVKFetcher initialized";
 
-	def get_next_id(self): 
-		print "NSTVKFetcher: Incrementing id..."
+	def get_next(self):
 		self._id += 1
-		return str(self._id)
 
-	def get_friends_list(self, id):
-		print "NSTVKFetcher: Returning "+id+"'s friends list..."
-		result = []
-		result.append(id)
-		return result
+
+		res_id = self._id
+		print "NSTVKFetcher: Returning "+str(self._id)+"'s friends list..."
+		res_list = [self._id]
+		return (res_id, res_list)
