@@ -3,6 +3,7 @@
 from nstdbkeeper import NSTDBKeeper
 from nstvkfetcher import NSTVKFetcher
 import sys
+import time
 
 def main():
 	if len(sys.argv) < 4:
@@ -22,8 +23,10 @@ def main():
 		print "Not initialized, quitting..."
 		quit()
 
-	(person_id, frient_list) = fetcher.get_next()
-	keeper.insert(person_id, frient_list)
+	for i in xrange(10000):
+		(person_id, friend_list) = fetcher.get_next()
+		keeper.insert(person_id, friend_list)
+		ids_test.append(person_id)
 
 if __name__ == "__main__":
 	main()
