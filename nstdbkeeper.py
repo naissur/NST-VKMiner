@@ -32,7 +32,7 @@ class NSTDBKeeper:
 			self.MAXIMUM_BATCH_LENGTH = maximum_batch_length
 			print "NSTDBKeeper: NSTDBKeeper initialized"
 		except Exception as e:
-			print "Exception in DB init"
+			print "NSTDBKeeper: Exception in DB init"
 			print e
 			raise e
 
@@ -45,10 +45,12 @@ class NSTDBKeeper:
 			self._batch.get_or_create_in_index(neo4j.Relationship, self._rels_index, "rel_id", str(min(personId,friend_id))+"_"+str(max(personId, friend_id)), rel(id_node, "FRIEND", friend_node))
 			self._counter += 2
 		if self._counter >= self.MAXIMUM_BATCH_LENGTH: 
+			print "NSTDBKeeper: Batch is full, running transaction"
 			self._batch.run()
 			self._counter = 0
 	
 
 	def __del__(self):
+		print "NSTDBKeeper: Running the last transaction"
 		self._batch.run()
-		print "Successfully destroyed NSTDBKreator()"
+		print "Successfully destroyed NSTDBKeeper"
