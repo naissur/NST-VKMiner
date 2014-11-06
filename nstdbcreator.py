@@ -15,19 +15,26 @@ def main():
 	login = sys.argv[2]
 	password = sys.argv[3]
 
+
+	MAX_ID = 1000
+
 	try:
 		fetcher = NSTVKFetcher(app_id, login, password)
-		keeper = NSTDBKeeper()
+		keeper = NSTDBKeeper(10000)
 
 	except Exception as e:
 		print e
 		print "Not initialized, quitting..."
 		quit()
 
-	for i in xrange(10):
+	for i in xrange(MAX_ID):
 		try:
 			(person_id, friend_list) = fetcher.get_next()
-			keeper.insert(person_id, friend_list)
+			res_list = []
+			for friend in friend_list:
+				if friend < MAX_ID:
+					res_list.append(friend)
+			keeper.insert(person_id, res_list)
 		except Exception as e:
 			print e
 			print "Stopped fetching due to exception. Quitting..."
