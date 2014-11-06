@@ -18,15 +18,23 @@ def main():
 	try:
 		fetcher = NSTVKFetcher(app_id, login, password)
 		keeper = NSTDBKeeper()
+
 	except Exception as e:
 		print e
 		print "Not initialized, quitting..."
 		quit()
 
-	for i in xrange(10000):
-		(person_id, friend_list) = fetcher.get_next()
-		keeper.insert(person_id, friend_list)
-		ids_test.append(person_id)
+	for i in xrange(10):
+		try:
+			(person_id, friend_list) = fetcher.get_next()
+			keeper.insert(person_id, friend_list)
+		except Exception as e:
+			print e
+			print "Stopped fetching due to exception. Quitting..."
+			quit()
+
+	del fetcher
+	del keeper
 
 if __name__ == "__main__":
 	main()
