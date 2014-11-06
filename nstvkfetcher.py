@@ -76,7 +76,7 @@ class NSTVKFetcher:
 
 			
 
-			print "NSTVKFetcher: Fetched new batch of friends data"
+			#print "NSTVKFetcher: Fetched new batch of friends data"
 			res_list = []
 			for i in xrange(len(friends)):
 				if friends[i]:
@@ -91,7 +91,8 @@ class NSTVKFetcher:
 			#self.fetch_batch() 										# CHANGE, RECURCIION IS BAAD
 			print "NSTVKFetcher: Server timed-out, trying again..."
 			print "NSTVKFetcher: Stopped at", self.get_new_id()
-			raise r
+			print "NSTVKFetcher: Trying again..."
+			self.fetch_batch()
 
 		except requests.exceptions.ConnectionError as e:
 			print "NSTVKFetcher: Connection lost. Quitting..."
@@ -100,14 +101,14 @@ class NSTVKFetcher:
 
 	def get_next(self):
 		if not (self._batch) :
-			print "NSTVKFetcher: Waiting until fetch comes ready..."
+			#print "NSTVKFetcher: Waiting until fetch comes ready..."
 			while not self.fetch_ready():
 				pass
 
 			self.fetch_batch()
-			print "NSTVKFetcher: Fetched a new batch"
+			#print "NSTVKFetcher: Fetched a new batch"
 
-		print "NSTVKFetcher: Batch has "+str(len(self._batch))+" entities, popping"
+		#print "NSTVKFetcher: Batch has "+str(len(self._batch))+" entities, popping"
 
 		next_tuple = self._batch.pop()
 		#print "NSTVKFetcher: Returning "+str(next_tuple[0])+"'s friends list"

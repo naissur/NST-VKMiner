@@ -16,7 +16,7 @@ def main():
 	password = sys.argv[3]
 
 
-	MAX_ID = 1000
+	MAX_ID = 100
 
 	try:
 		fetcher = NSTVKFetcher(app_id, login, password)
@@ -30,6 +30,7 @@ def main():
 	for i in xrange(MAX_ID):
 		try:
 			(person_id, friend_list) = fetcher.get_next()
+			print "NSTDBCreator: now at node",person_id
 			res_list = []
 			for friend in friend_list:
 				if friend < MAX_ID:
