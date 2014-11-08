@@ -47,6 +47,7 @@ class NSTDBKeeper:
 		if self._counter >= self.MAXIMUM_BATCH_LENGTH: 
 			print "NSTDBKeeper: Batch is full, running transaction"
 			self._batch.run()
+			self._batch.clear()   # Clears all batch requests
 			self._counter = 0
 	
 

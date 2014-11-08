@@ -12,6 +12,7 @@ class NSTVKFetcher:
 	"""
 	_current_id = 0
 	_batch = []
+	_batch_ids = []
 	_vkapi = None
 	_time_last_fetched = datetime.datetime.now()
 	_FETCH_INTERVAL_SECS = 0.34 					# < THAN A SECOND!
@@ -23,7 +24,7 @@ class NSTVKFetcher:
 		_FETCH_INTERVAL_SECS = 0.34
 		print "NSTVKFetcher: NSTVKFetcher initialized";
 		try:
-			self._vkapi = vk.API(str(app_id), str(login), str(password))
+			self._vkapi = vk.API(app_id = str(app_id), user_login = str(login), user_password = str(password), timeout = 30)
 		except Exception as e:
 			raise e
 			print "NSTVKFetcher: Could not establish connection."
@@ -35,44 +36,45 @@ class NSTVKFetcher:
 
 	def fetch_ready(self):
 		time_now = datetime.datetime.now()
-		elapsed = (time_now-self._time_last_fetched).microseconds/(10.0**6)
+		elapsed = (time_now-self._time_last_fetched).microseconds/(1e6)
 		if(elapsed > self._FETCH_INTERVAL_SECS):
 			return True
 		else:
 			return False
 
-	def fetch_batch(self):
+	def fetch_batch(self, get_new_batch = True):
 		try:
-			ids = []
-			for index in xrange(25):
-				self.get_new_id()
-				ids.append(self._current_id)
+			if get_new_batch:
+				self._batch_ids = []
+				for index in xrange(25):
+					self.get_new_id()
+					self._batch_ids.append(self._current_id)
 
-			friends = self._vkapi('execute.getFriendsList', id0 = ids[0],
-															id1 = ids[1],
-															id2 = ids[2],
-															id3 = ids[3],
-															id4 = ids[4],
-															id5 = ids[5],
-															id6 = ids[6],
-															id7 = ids[7],
-															id8 = ids[8],
-															id9 = ids[9],
-															id10 = ids[10],
-															id11 = ids[11],
-															id12 = ids[12],
-															id13 = ids[13],
-															id14 = ids[14],
-															id15 = ids[15],
-															id16 = ids[16],
-															id17 = ids[17],
-															id18 = ids[18],
-															id19 = ids[19],
-															id20 = ids[20],
-															id21 = ids[21],
-															id22 = ids[22],
-															id23 = ids[23],
-															id24 = ids[24])
+			friends = self._vkapi('execute.getFriendsList', id0 = self._batch_ids[0],
+															id1 = self._batch_ids[1],
+															id2 = self._batch_ids[2],
+															id3 = self._batch_ids[3],
+															id4 = self._batch_ids[4],
+															id5 = self._batch_ids[5],
+															id6 = self._batch_ids[6],
+															id7 = self._batch_ids[7],
+															id8 = self._batch_ids[8],
+															id9 = self._batch_ids[9],
+															id10 = self._batch_ids[10],
+															id11 = self._batch_ids[11],
+															id12 = self._batch_ids[12],
+															id13 = self._batch_ids[13],
+															id14 = self._batch_ids[14],
+															id15 = self._batch_ids[15],
+															id16 = self._batch_ids[16],
+															id17 = self._batch_ids[17],
+															id18 = self._batch_ids[18],
+															id19 = self._batch_ids[19],
+															id20 = self._batch_ids[20],
+															id21 = self._batch_ids[21],
+															id22 = self._batch_ids[22],
+															id23 = self._batch_ids[23],
+															id24 = self._batch_ids[24])
 
 			
 
@@ -80,7 +82,7 @@ class NSTVKFetcher:
 			res_list = []
 			for i in xrange(len(friends)):
 				if friends[i]:
-					res_list.append( (ids[i], friends[i] ) )
+					res_list.append( (self._batch_ids[i], friends[i] ) )
 			
 			self._batch = res_list
 
@@ -89,10 +91,10 @@ class NSTVKFetcher:
 
 		except requests.exceptions.Timeout as e:
 			#self.fetch_batch() 										# CHANGE, RECURCIION IS BAAD
-			print "NSTVKFetcher: Server timed-out, trying again..."
+			print "NSTVKFetcher: Server timed-out"
 			print "NSTVKFetcher: Stopped at", self.get_new_id()
 			print "NSTVKFetcher: Trying again..."
-			self.fetch_batch()
+			self.fetch_batch(get_new_batch = False)
 
 		except requests.exceptions.ConnectionError as e:
 			print "NSTVKFetcher: Connection lost. Quitting..."
