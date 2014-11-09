@@ -16,8 +16,8 @@ def main():
 	password = sys.argv[3]
 
 
-	MAX_ID = 100000
-	START_ID = 188389
+	MAX_ID = 10000
+	START_ID = 1
 
 	try:
 		fetcher = NSTVKFetcher(app_id, login, password, start_id=START_ID)
@@ -45,7 +45,7 @@ def main():
 			while res_list == []:  #add only people with 1 or more friends
 				(person_id, friend_list) = fetcher.get_next()
 				if friend_list:    #if friend_list is empty, no need to go on
-					res_list = list( friend_id for friend_id in friend_list if friend_id < person_id )
+					res_list = list( friend_id for friend_id in friend_list if (friend_id < person_id) and (friend_id > START_ID))
 				else:
 					continue
 

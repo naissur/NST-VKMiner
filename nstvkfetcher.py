@@ -17,7 +17,7 @@ class NSTVKFetcher:
 	_time_last_fetched = datetime.datetime.now()
 	_FETCH_INTERVAL_SECS = 0.34 					# < THAN A SECOND!
 
-	def __init__(self, app_id, login, password, start_id=1)
+	def __init__(self, app_id, login, password, start_id=1):
 		self._batch = []
 		self._current_id = start_id
 		self._time_last_fetched = datetime.datetime.now()
