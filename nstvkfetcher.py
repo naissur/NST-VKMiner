@@ -17,11 +17,11 @@ class NSTVKFetcher:
 	_time_last_fetched = datetime.datetime.now()
 	_FETCH_INTERVAL_SECS = 0.34 					# < THAN A SECOND!
 
-	def __init__(self, app_id, login, password):
-		_batch = []
-		_current_id = 0
-		_time_last_fetched = datetime.datetime.now()
-		_FETCH_INTERVAL_SECS = 0.34
+	def __init__(self, app_id, login, password, start_id=1)
+		self._batch = []
+		self._current_id = start_id
+		self._time_last_fetched = datetime.datetime.now()
+		self._FETCH_INTERVAL_SECS = 0.34
 		print "NSTVKFetcher: NSTVKFetcher initialized";
 		try:
 			self._vkapi = vk.API(app_id = str(app_id), user_login = str(login), user_password = str(password), timeout = 30)
@@ -79,12 +79,13 @@ class NSTVKFetcher:
 			
 
 			#print "NSTVKFetcher: Fetched new batch of friends data"
-			res_list = []
-			for i in xrange(len(friends)):
-				if friends[i]:
-					res_list.append( (self._batch_ids[i], friends[i] ) )
+			#res_list = []
+			#for i in xrange(len(friends)):
+				#if friends[i]:
+					#res_list.append( (self._batch_ids[i], friends[i] ) )
 			
-			self._batch = res_list
+			#self._batch = res_list
+			self._batch = zip(self._batch_ids,friends)   # Should be faster, and so much easier to read. Does'nt handle people with no friends, but that can be done in main program
 
 			#self._batch = list((ids[i], friends[i]) for i in xrange(25) )
 			self._time_last_fetched = datetime.datetime.now()

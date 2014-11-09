@@ -22,11 +22,12 @@ class NSTDBKeeper:
 	_counter = 0
 	
 
-	def __init__(self, maximum_batch_length):
+	def __init__(self, maximum_batch_length=2000, clear=True):
 		try:
 			self._graph_db = neo4j.GraphDatabaseService()
 			self._batch = neo4j.WriteBatch(self._graph_db)
-			self._graph_db.clear()
+			if clear:
+				self._graph_db.clear()
 			self._nodes_index = self._graph_db.get_or_create_index(neo4j.Node, "nodes_index")
 			self._rels_index = self._graph_db.get_or_create_index(neo4j.Relationship, "rels_index")
 			self.MAXIMUM_BATCH_LENGTH = maximum_batch_length
